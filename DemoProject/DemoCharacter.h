@@ -1,0 +1,45 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "UI/InGameHud.h"
+#include "Components/WidgetComponent.h"
+#include "UI/HealthBarWidget.h"
+#include "DemoCharacter.generated.h"
+
+UCLASS()
+class DEMOPROJECT_API ADemoCharacter : public ACharacter
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Health")
+		float CurrentHealth = 100;
+
+	UPROPERTY(EditAnywhere, Category = "Health")
+		float StartingHealth = 100;
+
+	// Sets default values for this character's properties
+	ADemoCharacter();
+	void InitializeHealthBar();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	// Widget class reference
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> HealthBarWidgetClass;
+
+	// C++ widget pointer
+	UHealthBarWidget* HealthBarWidget;
+};
