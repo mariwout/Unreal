@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "UI/InGameHud.h"
 #include "Components/WidgetComponent.h"
 #include "UI/HealthBarWidget.h"
 #include "DemoCharacter.generated.h"
