@@ -37,7 +37,7 @@ public:
 
 	// Bound blueprint widget progressbar
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		class UProgressBar* HealthProgressBar;
+		class UProgressBar* HealthStatusBar;
 
 private:
 	// Private function to update color and opacity of Health Bar

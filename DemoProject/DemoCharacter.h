@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Components/WidgetComponent.h"
 #include "UI/HealthBarWidget.h"
+#include "UObject/ConstructorHelpers.h"
 #include "DemoCharacter.generated.h"
 
 UCLASS()
@@ -36,8 +37,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	// Widget class reference
+	// ConstructorHelpers::FClassFinder<UUserWidget> HealthBarClassFinder(TEXT("/UI/BP_HealthBarWidget"));
+
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
-	TSubclassOf<UUserWidget> HealthBarWidgetClass;
+	TSubclassOf<UUserWidget> HealthBarWidgetClass;// = HealthBarClassFinder.Class;
 
 	// C++ widget pointer
 	UHealthBarWidget* HealthBarWidget;

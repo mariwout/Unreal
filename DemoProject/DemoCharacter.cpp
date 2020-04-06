@@ -7,6 +7,9 @@ ADemoCharacter::ADemoCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	// ConstructorHelpers::FClassFinder<UUserWidget> HealthBarClassFinder(TEXT("/UI/BP_HealthBarWidget"));
+	// TSubclassOf<UUserWidget> HealthBarWidgetClass = HealthBarClassFinder.Class;
 }
 
 // Called when the game starts or when spawned
