@@ -37,9 +37,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	// Widget class reference
-	// ConstructorHelpers::FClassFinder<UUserWidget> HealthBarClassFinder(TEXT("/UI/BP_HealthBarWidget"));
-
-	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> HealthBarWidgetClass;// = HealthBarClassFinder.Class;
 
 	// C++ widget pointer

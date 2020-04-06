@@ -9,26 +9,48 @@ UHealthBarWidget::UHealthBarWidget(const FObjectInitializer& ObjectInitializer)
 }
 
 // Function to update parameters of the health bar, such as percentage and location. 
-void UHealthBarWidget::UpdateHealthBar(float Value, FVector ActorLocation)
+void UHealthBarWidget::UpdateHealthBar(float Value)
 {
-	
 	UpdateHealthBarPercentage(Value);
-	UpdateHealthBarLocation(ActorLocation);
+	UpdateHealthBarLocation();
 }
 
 // Toggle Health Bar visibility on or off
 void UHealthBarWidget::HealthBarVisibilityToggle()
 {
-	// If it is hidden, toggle it to visible
-	if (HealthStatusBar->Visibility == ESlateVisibility::Hidden)
-	{
-		HealthStatusBar->SetVisibility(ESlateVisibility::Visible);
+	if (HealthStatusBar) {
+		// If it is hidden, toggle it to visible
+		if (HealthStatusBar->Visibility == ESlateVisibility::Hidden)
+		{
+			HealthStatusBar->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			// Else hide it
+			HealthStatusBar->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
-	else
+}
+
+// Bind widget to actor and add to viewport in correct size
+void UHealthBarWidget::Setup(AActor* NewOwner)
+{
+	if (OwningActor == NewOwner)
 	{
-		// Else hide it
-		HealthStatusBar->SetVisibility(ESlateVisibility::Hidden);
+		// Skip repeated calls
+		return;
 	}
+	OwningActor = NewOwner;
+
+	// Add widget to viewport
+	this->AddToViewport();
+
+	// Get size of owning actor to determine widget width
+	FVector ActorBoundingBoxSize = OwningActor->GetComponentsBoundingBox().GetSize();
+	FVector2D DesiredSize = FVector2D(ActorBoundingBoxSize.X, WidgetHeight);
+
+	// Set desired size
+	this->SetHealthBarSize(DesiredSize);
 }
 
 // Function to update fill percentage of the health bar. 
@@ -67,17 +89,34 @@ void UHealthBarWidget::UpdateHealthBarColorAndOpacity(FLinearColor HealthBarColo
 }
 
 // Function to update location of the health bar using canvasslot
-void UHealthBarWidget::UpdateHealthBarLocation(FVector ActorLocation)
+void UHealthBarWidget::UpdateHealthBarLocation()
 {
 	APlayerController* PController = GetWorld()->GetFirstPlayerController();
 
 	// FVector2D to hold the widget screen location
 	FVector2D WidgetScreenLocation;
 
+	// Get size of owning actor to determine widget offset
+	FVector ActorBoundingBoxSize = OwningActor->GetComponentsBoundingBox().GetSize();
+	float HealthBarOffset = ActorBoundingBoxSize.Z / 4 * 3;
+
+	FVector ActorLocation = OwningActor->GetActorLocation();
+	ActorLocation.Z = ActorLocation.Z + HealthBarOffset;
+
 	// Project the world actor location to the screenlocation
 	if (UGameplayStatics::ProjectWorldToScreen(PController, ActorLocation, WidgetScreenLocation))
 	{
 		// Set the position of the widget
 		this->SetPositionInViewport(WidgetScreenLocation);
+	}
+}
+
+// Setup HealthBar size 
+void UHealthBarWidget::SetHealthBarSize(FVector2D DesiredSize)
+{
+	UCanvasPanelSlot* CanvasSlot = Cast< UCanvasPanelSlot >(HealthStatusBar->Slot);
+
+	if (CanvasSlot) {
+		CanvasSlot->SetSize(DesiredSize);
 	}
 }
