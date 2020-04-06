@@ -47,10 +47,22 @@ void ADemoCharacter::Tick(float DeltaTime)
 	FVector ActorLocation = this->GetActorLocation();
 
 	// Calculate Health percentage
-	float HealthPercent = StartingHealth / CurrentHealth;
+	float HealthPercent = CurrentHealth / StartingHealth;
+
+	// --- EXAMPLE --- reduce currentHealth by 1
+	CurrentHealth = CurrentHealth - 1;
+
+	// --- EXAMPLE --- Hide the Health Bar if there is no more health 
+	if (CurrentHealth == 0)
+	{
+		HealthBarWidget->HealthBarVisibilityToggle();
+	}
 
 	// Call widget update function
-	HealthBarWidget->UpdateHealthBar(HealthPercent, ActorLocation);
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->UpdateHealthBar(HealthPercent, ActorLocation);
+	}
 }
 
 // Called to bind functionality to input

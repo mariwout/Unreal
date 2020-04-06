@@ -8,6 +8,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Kismet/GameplayStatics.h"
+#include "Math/Color.h"
 #include "HealthBarWidget.generated.h"
 
 /**
@@ -31,7 +32,15 @@ public:
 	// Function to update percentage of health bar based on percentage input 
 	void UpdateHealthBarPercentage(float Value);
 
+	// Toggle Health Bar visibility on or off
+	void HealthBarVisibilityToggle();
+
 	// Bound blueprint widget progressbar
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UProgressBar* HealthProgressBar;
+		class UProgressBar* HealthProgressBar;
+
+private:
+	// Private function to update color and opacity of Health Bar
+	void UpdateHealthBarColorAndOpacity(FLinearColor HealthBarColorAndOpacity);
+
 };
